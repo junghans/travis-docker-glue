@@ -1,4 +1,5 @@
-FROM laristra/flecsi-buildenv:fedora
+FROM junghans/travis-docker-glue:fedora
+#see the Dockerfiles branch for source of these
 
 ARG COVERAGE
 ARG CC
@@ -15,14 +16,14 @@ ARG TRAVIS_TAG
 ARG TRAVIS_REPO_SLUG
 ARG TRAVIS_COMMIT
 
-RUN rm -rf /home/flecsi/.ccache
-COPY flecsi /home/flecsi/flecsi
-COPY ccache/ /home/flecsi/.ccache
+RUN rm -rf /home/user/.ccache
+COPY git-src /home/user/git-src
+COPY ccache/ /home/user/.ccache
 USER root
-RUN chown -R flecsi:flecsi /home/flecsi/flecsi /home/flecsi/.ccache
-USER flecsi
+RUN chown -R user:user /home/user/git-src /home/user/.ccache
+USER user
 
-WORKDIR /home/flecsi/flecsi
+WORKDIR /home/user/git-src
 RUN mkdir build
 
 WORKDIR build
@@ -41,5 +42,5 @@ RUN cd .. && if [ ${COVERAGE} ]; then \
 fi && cd -
 USER root
 RUN make install
-USER flecsi
-WORKDIR /home/flecsi
+USER user
+WORKDIR /home/user

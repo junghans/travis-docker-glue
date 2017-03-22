@@ -17,7 +17,7 @@ script:
   - cp -vr docker ${HOME}/docker
   - sed -i "1s/fedora/${DISTRO}/" ${HOME}/docker/Dockerfile
   - cd ../../
-  - mv -v ${TRAVIS_REPO_SLUG} $HOME/docker
+  - mv -v ${TRAVIS_REPO_SLUG} $HOME/docker/git-src
   - cp -r $HOME/.ccache ${HOME}/docker/ccache
   - docker build --build-arg COVERAGE=${COVERAGE}
                 --build-arg CC=${CC} --build-arg CXX=${CXX}
