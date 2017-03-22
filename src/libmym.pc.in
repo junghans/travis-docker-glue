@@ -1,0 +1,12 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+libdir=${prefix}/@LIB@
+includedir=${prefix}/include
+
+Name: libmym
+Description: new tan
+URL: http://www.compphys.de
+Version: @VERSION@
+Requires:
+Libs: -L${libdir} -lmym
+Libs.private: -lm
+Cflags: -I${includedir}
