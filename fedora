@@ -1,0 +1,15 @@
+FROM fedora:latest
+RUN dnf install -y make cmake git gcc-c++ gcc-gfortran flex patch doxygen graphviz pandoc python2 openmpi-devel exodusii-devel cereal-devel lapack-devel scotch-devel metis-devel environment-modules python-pip clang llvm compiler-rt ccache texlive-epstopdf-bin ghostscript-core texlive-latex-bin-bin texlive-collection-fontsrecommended texlive-fancyhdr findutils texlive-booktabs gdb wget curl lcov
+RUN wget -O /usr/bin/doxy-coverage https://raw.githubusercontent.com/alobbs/doxy-coverage/master/doxy-coverage.py
+RUN chmod +x /usr/bin/doxy-coverage
+
+RUN groupadd -r user
+RUN useradd -r -m -g user user
+USER user
+ENV PATH=/usr/lib64/ccache:${PATH}${PATH:+:}/usr/lib64/openmpi/bin/
+ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}${LD_LIBRARY_PATH:+:}/usr/lib64/openmpi/lib/
+#ENV MPI_INCLUDE=/usr/include/openmpi-x86_64
+#ENV MPI_LIB=/usr/lib64/openmpi/lib
+ENV PYTHONPATH=/usr/local/lib/python2.7/site-packages${PYTHONPATH:+:}${PYTHONPATH}
+WORKDIR /home/user
+RUN pip install --user codecov coverxygen
