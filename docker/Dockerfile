@@ -21,8 +21,9 @@ ARG TRAVIS_COMMIT
 RUN rm -rf /home/user/.ccache
 COPY git-src /home/user/git-src
 COPY ccache/ /home/user/.ccache
+COPY sonar/ /home/user/.sonar
 USER root
-RUN chown -R user:user /home/user/git-src /home/user/.ccache
+RUN chown -R user:user /home/user/git-src /home/user/.ccache /home/user/.sonar
 USER user
 
 WORKDIR /home/user/git-src

@@ -8,8 +8,7 @@ services:
 env:
   matrix:
     - DISTRO=ubuntu
-    - DISTRO=ubuntu COVERAGE=ON
-    - DISTRO=ubuntu SONARQUBE=ON
+    - DISTRO=ubuntu COVERAGE=ON SONARQUBE=ON
 
     - DISTRO=fedora
     - DISTRO=fedora COVERAGE=ON
@@ -20,6 +19,7 @@ script:
   - cd ../../
   - mv -v ${TRAVIS_REPO_SLUG} $HOME/docker/git-src
   - cp -r $HOME/.ccache ${HOME}/docker/ccache
+  - cp -r $HOME/.sonar ${HOME}/docker/sonar
   - docker build --build-arg COVERAGE=${COVERAGE}
                 --build-arg CC=${CC} --build-arg CXX=${CXX}
                 --build-arg SONARQUBE=${SONARQUBE} --build-arg SONARQUBE_TOKEN=${SONARQUBE_TOKEN}
@@ -30,7 +30,8 @@ script:
                 -t ${TRAVIS_REPO_SLUG}:latest ${HOME}/docker/ &&
     rm -rf ${HOME}/.ccache &&
     CON=$(docker run -d ${TRAVIS_REPO_SLUG}:latest /bin/bash) &&
-    docker cp ${CON}:/home/user/.ccache ${HOME}/
+    docker cp ${CON}:/home/user/.ccache ${HOME}/ &&
+    docker cp ${CON}:/home/user/.sonar ${HOME}/
 
 after_success:
   - if [[ ${DOCKERHUB} = true && ${DOCKER_EMAIL} && ${DOCKER_USERNAME} && ${DOCKER_PASSWORD} && ${TRAVIS_PULL_REQUEST} == false && ${TRAVIS_BRANCH} == master ]]; then
@@ -39,7 +40,9 @@ after_success:
     fi
 
 cache:
-  - ccache
+  ccache: true
+  directories:
+    - $HOME/.sonar
 
 compiler:
   - gcc
