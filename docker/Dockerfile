@@ -28,7 +28,7 @@ RUN mkdir build
 
 WORKDIR build
 RUN ccache -z
-RUN cmake ${COVERAGE:+-DENABLE_COVERAGE_BUILD=ON} ..
+RUN cmake ${COVERAGE:+-DENABLE_COVERAGE_BUILD=ON} -DENABLE_TESTING=ON ..
 RUN make VERBOSE=1 -j2
 RUN ccache -s
 RUN make test
