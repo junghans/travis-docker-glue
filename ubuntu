@@ -5,7 +5,7 @@ RUN wget -O /usr/bin/doxy-coverage https://raw.githubusercontent.com/alobbs/doxy
 RUN chmod +x /usr/bin/doxy-coverage
 
 RUN groupadd -r user
-RUN useradd -r -m -g user
+RUN useradd -r -m -g user user
 USER user
 ENV PATH=/usr/lib/ccache:${PATH}
 WORKDIR /home/user
