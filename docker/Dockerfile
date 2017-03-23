@@ -47,6 +47,7 @@ RUN cd .. && if [ ${SONARQUBE} ]; then \
   sonar-scanner \
     -Dsonar.projectKey=${TRAVIS_REPO_SLUG##*/} \
     -Dsonar.sources=. \
+    -Dsonar.exclusions=build/CMakeFiles/** \
     -Dsonar.cfamily.build-wrapper-output=build/bw-output \
     -Dsonar.host.url=https://sonarqube.com \
     -Dsonar.organization=${TRAVIS_REPO_SLUG%%/*}-github \
