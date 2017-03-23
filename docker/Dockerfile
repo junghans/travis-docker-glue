@@ -2,6 +2,8 @@ FROM junghans/travis-docker-glue:fedora
 #see the Dockerfiles branch for source of these
 
 ARG COVERAGE
+ARG SONARQUBE
+ARG SONARQUBE_TOKEN
 ARG CC
 ARG CXX
 
@@ -29,7 +31,7 @@ RUN mkdir build
 WORKDIR build
 RUN ccache -z
 RUN cmake ${COVERAGE:+-DENABLE_COVERAGE_BUILD=ON} -DENABLE_TESTING=ON ..
-RUN make VERBOSE=1 -j2
+RUN ${SONARQUBE:+build-wrapper-linux-x86-64 --out-dir bw-output} make VERBOSE=1 -j2
 RUN ccache -s
 RUN make test
 RUN make install DESTDIR=${PWD}
@@ -40,6 +42,16 @@ RUN cd .. && if [ ${COVERAGE} ]; then \
     $HOME/.local/bin/codecov; \
   fi; \
 fi && cd -
+RUN cd .. && if [ ${SONARQUBE} ]; then \
+  sonar-scanner \
+    -Dsonar.projectKey=${TRAVIS_REPO_SLUG##*/} \
+    -Dsonar.sources=. \
+    -Dsonar.cfamily.build-wrapper-output=build/bw-output \
+    -Dsonar.host.url=https://sonarqube.com \
+    -Dsonar.organization=${TRAVIS_REPO_SLUG%%/*}-github \
+    -Dsonar.login=${SONARQUBE_TOKEN}; \ 
+fi && cd -
+ENV SONARQUBE_TOKEN ""
 USER root
 RUN make install
 USER user
