@@ -4,6 +4,16 @@ RUN apt-get -qq install -y make cmake cmake-data git g++ gfortran flex doxygen g
 RUN wget -O /usr/bin/doxy-coverage https://raw.githubusercontent.com/alobbs/doxy-coverage/master/doxy-coverage.py
 RUN chmod +x /usr/bin/doxy-coverage
 
+RUN apt-get install -y unzip software-properties-common python-software-properties
+RUN add-apt-repository ppa:webupd8team/java; apt-get -q update -y
+RUN echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
+RUN echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections
+RUN apt-get install -qq -y oracle-java9-installer
+RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-2.8.zip https://sonarqube.com/static/cpp/build-wrapper-linux-x86.zip
+RUN unzip sonar-scanner-2.8.zip -d /sonarqube/
+RUN unzip build-wrapper-linux-x86.zip -d /sonarqube/
+ENV PATH=${PATH}${PATH:+:}/sonarqube/build-wrapper-linux-x86:/sonarqube/sonar-scanner-2.8/bin
+
 RUN groupadd -r user
 RUN useradd -r -m -g user
 USER user
