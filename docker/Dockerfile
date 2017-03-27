@@ -43,13 +43,14 @@ RUN cd .. && if [ ${COVERAGE} ]; then \
     $HOME/.local/bin/codecov; \
   fi; \
 fi && cd -
-RUN cd .. && if [ ${SONARQUBE} ]; then \
+RUN cd .. && if [ ${TRAVIS_BRANCH} = master ] && [ ${TRAVIS_PULL_REQUEST} = false ] && [ ${SONARQUBE} ]; then \
   sonar-scanner \
     -Dsonar.projectKey=${TRAVIS_REPO_SLUG##*/} \
     -Dsonar.sources=. \
     -Dsonar.exclusions=build/CMakeFiles/** \
     -Dsonar.cfamily.build-wrapper-output=build/bw-output \
     -Dsonar.host.url=https://sonarqube.com \
+    -Dsonar.cfamily.gcov.reportsPath=. \
     -Dsonar.organization=${TRAVIS_REPO_SLUG%%/*}-github \
     -Dsonar.login=${SONARQUBE_TOKEN}; \ 
 fi && cd -
