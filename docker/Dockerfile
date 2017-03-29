@@ -4,6 +4,7 @@ FROM junghans/travis-docker-glue:fedora
 ARG COVERAGE
 ARG SONARQUBE
 ARG SONARQUBE_TOKEN
+ARG SONARQUBE_GITHUB_TOKEN
 ARG CC
 ARG CXX
 
@@ -43,16 +44,28 @@ RUN cd .. && if [ ${COVERAGE} ]; then \
     $HOME/.local/bin/codecov; \
   fi; \
 fi && cd -
-RUN cd .. && if [ ${TRAVIS_BRANCH} = master ] && [ ${TRAVIS_PULL_REQUEST} = false ] && [ ${SONARQUBE} ]; then \
+RUN cd .. && if [ ${SONARQUBE} ]; then \
   sonar-scanner \
     -Dsonar.projectKey=${TRAVIS_REPO_SLUG##*/} \
+    -Dsonar.projectName=${TRAVIS_REPO_SLUG#*/} \
+    -Dsonar.projectVersion=${TRAVIS_COMMIT} \
+    -Dsonar.branch=/${TRAVIS_BRANCH} \
+    -Dsonar.links.homepage=http://github.com/${TRAVIS_REPO_SLUG} \
+    -Dsonar.links.ci=https://travis-ci.org/${TRAVIS_REPO_SLUG} \
+    -Dsonar.links.scm=https://github.com/${TRAVIS_REPO_SLUG} \
+    -Dsonar.links.issue=https://github.com/${TRAVIS_REPO_SLUG}/issues \
     -Dsonar.sources=. \
     -Dsonar.exclusions=build/CMakeFiles/** \
     -Dsonar.cfamily.build-wrapper-output=build/bw-output \
     -Dsonar.host.url=https://sonarqube.com \
     -Dsonar.cfamily.gcov.reportsPath=. \
     -Dsonar.organization=${TRAVIS_REPO_SLUG%%/*}-github \
-    -Dsonar.login=${SONARQUBE_TOKEN}; \ 
+    $([ ${TRAVIS_PULL_REQUEST} != false ] && echo \
+       -Dsonar.analysis.mode=preview \
+       -Dsonar.github.pullRequest=${TRAVIS_PULL_REQUEST} \
+       -Dsonar.github.repository=${TRAVIS_REPO_SLUG} \
+       -Dsonar.github.oauth=${SONARQUBE_GITHUB_TOKEN}) \
+    -Dsonar.login=${SONARQUBE_TOKEN}; \
 fi && cd -
 ENV SONARQUBE_TOKEN ""
 USER root
