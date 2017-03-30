@@ -16,6 +16,7 @@ Reason to use Docker in Travis:
 - [codecov.io](https://codecov.io/gh/junghans/travis-docker-glue)
 - [SonarQube](https://sonarqube.com/dashboard?id=travis-docker-glue)
 - [docker deploy](https://hub.docker.com/r/junghans/travis-docker-glue/tags)
+- [doxygen deploy](http://junghans.github.io/travis-docker-glue)
 
 # Release
 
