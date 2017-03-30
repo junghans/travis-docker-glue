@@ -10,7 +10,7 @@ env:
     - DISTRO=ubuntu
     - DISTRO=ubuntu COVERAGE=ON SONARQUBE=ON
 
-    - DISTRO=fedora
+    - DISTRO=fedora DOCKERHUB=ON
     - DISTRO=fedora COVERAGE=ON
 
 script:
@@ -35,9 +35,9 @@ script:
     docker cp ${CON}:/home/user/.sonar ${HOME}/
 
 after_success:
-  - if [[ ${DOCKERHUB} = true && ${DOCKER_EMAIL} && ${DOCKER_USERNAME} && ${DOCKER_PASSWORD} && ${TRAVIS_PULL_REQUEST} == false && ${TRAVIS_BRANCH} == master ]]; then
-      docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-      docker push "${TRAVIS_REPO_SLUG}:"latest;
+  - if [[ ${DOCKERHUB} && ${DOCKER_USERNAME} && ${DOCKER_PASSWORD} && ${TRAVIS_BRANCH} == master ]]; then
+      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+      if [[ ${CC} == gcc ]]; then docker push "${TRAVIS_REPO_SLUG}:latest"; fi;
     fi
 
 cache:
