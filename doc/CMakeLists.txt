@@ -1,0 +1,7 @@
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+  configure_file(Doxyfile.cmakein ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+  add_custom_target(doxygen COMMAND ${DOXYGEN_EXECUTABLE} Doxyfile COMMENT "Build doxygen documentation")
+  set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES "${CMAKE_CURRENT_BINARY_DIR}/html")
+  set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES "${CMAKE_CURRENT_BINARY_DIR}/xml")
+endif(DOXYGEN_FOUND)
