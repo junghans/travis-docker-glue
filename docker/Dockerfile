@@ -39,7 +39,7 @@ RUN make test
 RUN make install DESTDIR=${PWD}
 RUN make doxygen
 RUN cd .. && if [ ${COVERAGE} ]; then \
-   python -m coverxygen --xml-dir doc/doxygen/xml/ --src-dir . --output doxygen.coverage.info; \
+   python -m coverxygen --xml-dir build/doc/xml/ --src-dir . --output doxygen.coverage.info; \
    wget -O codecov.sh https://codecov.io/bash; \
    bash codecov.sh -X gcov -f doxygen.coverage.info -F documentation; \
    doxy-coverage build/doc/xml/; \
