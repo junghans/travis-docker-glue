@@ -35,7 +35,7 @@ script:
     docker cp ${CON}:/home/user/.sonar ${HOME}/
 
 after_success:
-  - if [[ ${DOCKERHUB} && ${DOCKER_USERNAME} && ${DOCKER_PASSWORD} && ${TRAVIS_BRANCH} == master ]]; then
+  - if [[ ${DOCKERHUB} && ${DOCKER_USERNAME} && ${DOCKER_PASSWORD} && ${TRAVIS_BRANCH} == master && ${TRAVIS_PULL_REQUEST} == false ]]; then
       docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
       if [[ ${CC} == gcc ]]; then docker push "${TRAVIS_REPO_SLUG}:latest"; fi;
     fi
