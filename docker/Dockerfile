@@ -50,6 +50,7 @@ RUN cd .. && if [ ${COVERAGE} ]; then \
   fi; \
 fi && cd -
 RUN cd .. && if [ ${SONARQUBE} ]; then \
+  [ ${COVERAGE} ] || find . -type f -name '*.gcno' -exec gcov -pb  {} +; \
   sonar-scanner \
     -Dsonar.projectKey=${TRAVIS_REPO_SLUG##*/} \
     -Dsonar.projectName=${TRAVIS_REPO_SLUG#*/} \
