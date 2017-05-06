@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/junghans/travis-docker-glue.svg?branch=master)](https://travis-ci.org/junghans/travis-docker-glue)
+[![codecov.io](https://codecov.io/github/junghans/travis-docker-glue/coverage.svg?branch=master)](https://codecov.io/github/junghans/travis-docker-glue?branch=master)
+[![Quality Gate](https://sonarqube.com/api/badges/gate?key=travis-docker-glue%3A%2Fmaster)](https://sonarqube.com/dashboard?id=travis-docker-glue%3A%2Fmaster)
 
 # Summary
 
