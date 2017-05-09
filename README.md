@@ -9,7 +9,7 @@ Travis.
 
 Reason to use Docker in Travis:
 - Testing other Linux Distributions
-- Dependencies, which cannot are not package and need a long time to build
+- Dependencies, which cannot be not packaged and/or need a long time to build
 - Need to deploy your build on docker hub
 
 # Supported Features
