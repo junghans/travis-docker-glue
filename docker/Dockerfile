@@ -9,8 +9,8 @@ ARG CC
 ARG CXX
 
 #for coverage
-ENV CI true
-ENV TRAVIS true
+ARG CI
+ARG TRAVIS
 ARG TRAVIS_BRANCH
 ARG TRAVIS_JOB_NUMBER
 ARG TRAVIS_PULL_REQUEST 
@@ -18,6 +18,7 @@ ARG TRAVIS_JOB_ID
 ARG TRAVIS_TAG
 ARG TRAVIS_REPO_SLUG
 ARG TRAVIS_COMMIT
+ARG TRAVIS_OS_NAME
 
 RUN rm -rf /home/user/.ccache
 COPY git-src /home/user/git-src
@@ -73,7 +74,6 @@ RUN cd .. && if [ ${SONARQUBE} ]; then \
        -Dsonar.github.oauth=${SONARQUBE_GITHUB_TOKEN}) \
     -Dsonar.login=${SONARQUBE_TOKEN}; \
 fi && cd -
-ENV SONARQUBE_TOKEN ""
 USER root
 RUN make install
 USER user
