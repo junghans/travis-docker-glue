@@ -15,7 +15,6 @@ env:
 
 script:
   - cp -vr docker ${HOME}/docker
-  - sed -i "1s/fedora/${DISTRO}/" ${HOME}/docker/Dockerfile
   - cd ../../
   - mv -v ${TRAVIS_REPO_SLUG} $HOME/docker/git-src
   - cp -r $HOME/.ccache ${HOME}/docker/ccache

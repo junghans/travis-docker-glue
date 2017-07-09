@@ -1,4 +1,5 @@
-FROM junghans/travis-docker-glue:fedora
+ARG TRAVIS_OS_NAME=fedora
+FROM junghans/travis-docker-glue:${TRAVIS_OS_NAME}
 #see the Dockerfiles branch for source of these
 
 ARG COVERAGE
@@ -18,7 +19,6 @@ ARG TRAVIS_JOB_ID
 ARG TRAVIS_TAG
 ARG TRAVIS_REPO_SLUG
 ARG TRAVIS_COMMIT
-ARG TRAVIS_OS_NAME
 
 RUN rm -rf /home/user/.ccache
 COPY git-src /home/user/git-src
