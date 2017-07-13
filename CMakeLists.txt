@@ -21,9 +21,7 @@ include(CheckCCompilerFlag)
 # User input options                                                   #
 ########################################################################
 option(BUILD_SHARED_LIBS "Build shared libs" ON)
-if (NOT DEFINED LIB)
-  set(LIB "lib")
-endif(NOT DEFINED LIB)
+include(GNUInstallDirs)
 
 option(ENABLE_TESTING "Enable testing" OFF)
 if(ENABLE_TESTING)
