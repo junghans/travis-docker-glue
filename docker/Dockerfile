@@ -64,7 +64,7 @@ RUN cd .. && if [ ${SONARQUBE} ]; then \
     -Dsonar.sources=. \
     -Dsonar.exclusions=build/CMakeFiles/**,build/doc/**,tests/** \
     -Dsonar.cfamily.build-wrapper-output=build/bw-output \
-    -Dsonar.host.url=https://sonarqube.com \
+    -Dsonar.host.url=https://sonarcloud.io \
     -Dsonar.cfamily.gcov.reportsPath=. \
     -Dsonar.organization=${TRAVIS_REPO_SLUG%%/*}-github \
     $([ ${TRAVIS_PULL_REQUEST} != false ] && echo \
