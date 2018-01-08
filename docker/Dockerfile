@@ -50,7 +50,7 @@ RUN cd .. && if [ ${COVERAGE} ]; then \
     $HOME/.local/bin/codecov -F ${CC}; \
   fi; \
 fi && cd -
-RUN cd .. && if [ ${SONARQUBE} ]; then \
+RUN cd .. && if [ ${SONARQUBE} ] && [ -n "${SONARQUBE_GITHUB_TOKEN}" ] && [ -n "${SONARQUBE_TOKEN}" ]; then \
   [ ${COVERAGE} ] || find . -type f -name '*.gcno' -exec gcov -pb  {} +; \
   sonar-scanner \
     -Dsonar.projectKey=${TRAVIS_REPO_SLUG##*/} \
