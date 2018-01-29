@@ -1,0 +1,22 @@
+language: cpp
+
+sudo: required
+
+services:
+- docker
+
+env:
+  matrix:
+    - DISTRO=ubuntu DOCKERHUB=true
+    - DISTRO=fedora DOCKERHUB=true
+
+script:
+  - mkdir ${HOME}/docker
+  - cp -v ${DISTRO} ${HOME}/docker/Dockerfile
+  - travis_retry docker build -t ${TRAVIS_REPO_SLUG}:${DISTRO} ${HOME}/docker/
+
+after_success:
+  - if [[ ${DOCKERHUB} && ${DOCKER_USERNAME} && ${DOCKER_PASSWORD} && ${TRAVIS_BRANCH} == Dockerfiles && ${TRAVIS_PULL_REQUEST} == false ]]; then
+      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+      if [[ ${CC} == gcc ]]; then docker push "${TRAVIS_REPO_SLUG}:${DISTRO}"; fi;
+    fi
