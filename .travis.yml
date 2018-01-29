@@ -20,7 +20,9 @@ script:
   - mv -v ${TRAVIS_REPO_SLUG} $HOME/docker/git-src
   - cp -r $HOME/.ccache ${HOME}/docker/ccache
   - cp -r $HOME/.sonar ${HOME}/docker/sonar
-  - docker build --build-arg COVERAGE=${COVERAGE}
+  - travis_retry docker pull $(sed -n '1s/FROM //p' ${HOME}/docker/Dockerfile)
+  - travis_retry docker build
+                --build-arg COVERAGE=${COVERAGE}
                 --build-arg CC=${CC} --build-arg CXX=${CXX}
                 --build-arg SONARQUBE_GITHUB_TOKEN=${SONARQUBE_GITHUB_TOKEN}
                 --build-arg SONARQUBE=${SONARQUBE} --build-arg SONARQUBE_TOKEN=${SONARQUBE_TOKEN}
