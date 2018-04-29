@@ -4,6 +4,7 @@ RUN apt-get -qq install -y make cmake cmake-data git g++ gfortran flex doxygen g
 RUN wget -O /usr/bin/doxy-coverage https://raw.githubusercontent.com/alobbs/doxy-coverage/master/doxy-coverage.py
 RUN chmod +x /usr/bin/doxy-coverage
 
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -y openjdk-8-jdk unzip software-properties-common python-software-properties
 RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-2.8.zip https://sonarqube.com/static/cpp/build-wrapper-linux-x86.zip
 RUN unzip sonar-scanner-2.8.zip -d /sonarqube/
