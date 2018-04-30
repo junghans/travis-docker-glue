@@ -5,7 +5,7 @@ RUN wget -O /usr/bin/doxy-coverage https://raw.githubusercontent.com/alobbs/doxy
 RUN chmod +x /usr/bin/doxy-coverage
 
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get install -y openjdk-8-jdk unzip software-properties-common python-software-properties
+RUN apt-get install -y openjdk-8-jdk unzip software-properties-common
 RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-2.8.zip https://sonarqube.com/static/cpp/build-wrapper-linux-x86.zip
 RUN unzip sonar-scanner-2.8.zip -d /sonarqube/
 RUN unzip build-wrapper-linux-x86.zip -d /sonarqube/
