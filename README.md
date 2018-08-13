@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.org/junghans/travis-docker-glue.svg?branch=master)](https://travis-ci.org/junghans/travis-docker-glue)
 [![codecov.io](https://codecov.io/github/junghans/travis-docker-glue/coverage.svg?branch=master)](https://codecov.io/github/junghans/travis-docker-glue?branch=master)
-[![Quality Gate](https://sonarqube.com/api/badges/gate?key=travis-docker-glue%3A%2Fmaster)](https://sonarqube.com/dashboard?id=travis-docker-glue%3A%2Fmaster)
 
 # Summary
 
@@ -16,7 +15,6 @@ Reason to use Docker in Travis:
 
 - [Travis' ccache](https://docs.travis-ci.com/user/caching/#ccache-cache)
 - [codecov.io](https://codecov.io/gh/junghans/travis-docker-glue)
-- [SonarQube](https://sonarqube.com/dashboard?id=travis-docker-glue)
 - [docker deploy](https://hub.docker.com/r/junghans/travis-docker-glue/tags)
 - [doxygen deploy](http://junghans.github.io/travis-docker-glue)
 
