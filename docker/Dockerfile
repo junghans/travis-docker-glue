@@ -2,9 +2,6 @@ FROM junghans/travis-docker-glue:fedora
 #see the Dockerfiles branch for source of these
 
 ARG COVERAGE
-ARG SONARQUBE
-ARG SONARQUBE_TOKEN
-ARG SONARQUBE_GITHUB_TOKEN
 ARG CC
 ARG CXX
 
@@ -34,7 +31,7 @@ RUN mkdir build
 WORKDIR build
 RUN ccache -z
 RUN cmake ${COVERAGE:+-DENABLE_COVERAGE_BUILD=ON} -DENABLE_TESTING=ON ..
-RUN ${SONARQUBE:+build-wrapper-linux-x86-64 --out-dir bw-output} make VERBOSE=1 -j2
+RUN make VERBOSE=1 -j2
 RUN ccache -s
 RUN make test
 RUN make install DESTDIR=${PWD}
@@ -49,30 +46,6 @@ RUN cd .. && if [ ${COVERAGE} ]; then \
   else \
     $HOME/.local/bin/codecov -F ${CC}; \
   fi; \
-fi && cd -
-RUN cd .. && if [ ${SONARQUBE} ] && [ -n "${SONARQUBE_GITHUB_TOKEN}" ] && [ -n "${SONARQUBE_TOKEN}" ]; then \
-  [ ${COVERAGE} ] || find . -type f -name '*.gcno' -exec gcov -pb  {} +; \
-  sonar-scanner \
-    -Dsonar.projectKey=${TRAVIS_REPO_SLUG##*/} \
-    -Dsonar.projectName=${TRAVIS_REPO_SLUG#*/} \
-    -Dsonar.projectVersion=${TRAVIS_COMMIT} \
-    -Dsonar.branch=/${TRAVIS_BRANCH} \
-    -Dsonar.links.homepage=http://github.com/${TRAVIS_REPO_SLUG} \
-    -Dsonar.links.ci=https://travis-ci.org/${TRAVIS_REPO_SLUG} \
-    -Dsonar.links.scm=https://github.com/${TRAVIS_REPO_SLUG} \
-    -Dsonar.links.issue=https://github.com/${TRAVIS_REPO_SLUG}/issues \
-    -Dsonar.sources=. \
-    -Dsonar.exclusions=build/CMakeFiles/**,build/doc/**,tests/** \
-    -Dsonar.cfamily.build-wrapper-output=build/bw-output \
-    -Dsonar.host.url=https://sonarcloud.io \
-    -Dsonar.cfamily.gcov.reportsPath=. \
-    -Dsonar.organization=${TRAVIS_REPO_SLUG%%/*}-github \
-    $([ ${TRAVIS_PULL_REQUEST} != false ] && echo \
-       -Dsonar.analysis.mode=preview \
-       -Dsonar.github.pullRequest=${TRAVIS_PULL_REQUEST} \
-       -Dsonar.github.repository=${TRAVIS_REPO_SLUG} \
-       -Dsonar.github.oauth=${SONARQUBE_GITHUB_TOKEN}) \
-    -Dsonar.login=${SONARQUBE_TOKEN}; \
 fi && cd -
 USER root
 RUN make install
